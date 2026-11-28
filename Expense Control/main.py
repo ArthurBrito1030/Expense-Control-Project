@@ -4,6 +4,24 @@ despesas = []
 
 opcao = ""
 
+import json
+ARQUIVO = "despesas.json"
+
+def carregar_despesas():
+    try:
+        with open(ARQUIVO, "r") as arquivo:
+            return json.load(arquivo)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError:
+        print("Aviso: o arquivo de despesas está corrompido. Começando vazio.")
+        return []
+    
+def salvar_despesas(despesas):
+    with open(ARQUIVO, "w") as arquivo:
+        json.dump(despesas, arquivo, indent=4)
+
+
 def registrar_despesa(despesas):
     while True:
         descricao = input("Digite a descrição da despesa: ").strip()
@@ -21,8 +39,9 @@ def registrar_despesa(despesas):
         if valor <= 0:
             print("O valor deve ser maior que zero.")
             continue
-        despesas.append([descricao, valor])
-        print("Despesa registrada com sucesso!")
+        break
+    despesas.append([descricao, valor])
+    print("Despesa registrada com sucesso!")
         
 
 def listar_despesas(despesas):
